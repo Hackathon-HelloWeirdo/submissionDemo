@@ -1,0 +1,37 @@
+
+server:
+  #配置端口号
+  port: 8088
+spring:
+  application:
+    #数据源和jpa配置
+    datasource:
+      #数据库相关的配置url  -SSL连接设置为false
+      url: jdbc:mysql://localhost:3306/mydata?characterEncoding=utf8&useSSL=false
+      #配置用户名
+      username: root
+      #配置密码
+      password: 12345678
+      #下面为连接池相关配置
+    jpa:
+      #配置数据库类型
+      database: MYSQL
+      #配置是否打印sql
+      show-sql: true
+      #Hibernate相关配置
+      hibernate:
+        #配置级联等级
+        naming:
+          #命名策略
+          strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5Dialect
+  jpa:
+    hibernate:
+      ddl-auto: update
+file:
+  path: D:/photos/
+logging:
+  level:
+    root: warn
