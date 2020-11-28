@@ -17,9 +17,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "",method = RequestMethod.GET)
+    @RequestMapping(value = "login",method = RequestMethod.GET)
     public ReqGoods get(){
-        return  new ReqGoods(1001L,"阿莫西林",10);
+        return  null;
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)

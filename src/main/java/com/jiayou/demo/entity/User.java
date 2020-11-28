@@ -14,49 +14,51 @@ public class User {
     @javax.persistence.Id
     @GeneratedValue
     @Column(name = "id")
-    private Integer id;
+    private String id;
 
     /**
      *用户名
      */
     @Column(name = "user_name")
-    private String userName;
+    private String user_name;
+
     /**
      *用户密码
      */
-    @Column(name = "user_name")
-    private Long password;
+    @Column(name = "password")
+    private String password;
 
     public User() {
     }
 
-    public User(String userName, Long password, Integer id) {
-        this.userName = userName;
-        this.password = password;
+    public User(String id, String user_name, String password) {
         this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getPassword() {
-        return password;
-    }
-
-    public void setPassword(Long password) {
+        this.user_name = user_name;
         this.password = password;
     }
 
-    public Integer getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

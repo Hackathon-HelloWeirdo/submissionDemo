@@ -4,16 +4,12 @@ import com.jiayou.demo.entity.SupGoods;
 import com.jiayou.demo.service.SupGoodsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/supqGoods")
+@RequestMapping("/supGoods")
 public class SupGoodsController {
-int i;
     @Value("${file.path}")
     private String filePath;
     private final SupGoodsService supGoodsService;
@@ -22,47 +18,47 @@ int i;
         this.supGoodsService = supGoodsService;
     }
 
-    @RequestMapping(value = "",method = RequestMethod.GET)
-    public SupGoods get(@RequestParam Long id){
+    /**
+     * 得到数据库里面所有的商品信息
+     *
+     * @return所有的商品信息
+     */
+    @RequestMapping(value = "getAll", method = RequestMethod.GET)
+    public SupGoods[] getAll() {
+        SupGoods[] supGoods = new SupGoods[10];
+        long i = 0;
         // return  new ReqGoods(1001L,"阿莫西林",10);
-        return supGoodsService.findById(id);
-    }
-
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public void save(@RequestBody SupGoods supGoods){
-//        System.out.println("jieshoucanshu:" + goods);
-        supGoodsService.save(supGoods);
+        try {
+            supGoods[(int) i] = supGoodsService.findById(i);
+        } catch (Exception e) {
+        }
+        return supGoods;
     }
 
     /**
+     * 存入发布的商品信息（Id，商品名称，图片，描述，发布的地址）
      *
-     * @param file 多个 public void imageUpload(MultipartFile file)
-     * @throws IllegalStateException
+     * @param goods
+     * @return 是否成功
      */
-    @RequestMapping(value = "upload2")
-    public void imageUpload(MultipartFile file) throws IllegalStateException{
-        File filee=new File(filePath);
-        if(!filee.exists()){
-            filee.mkdirs();
+    // @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "saveGoods", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String save(@RequestParam Map<String, String> goods) {
+        SupGoods theData=supGoodsService.findById(Long.parseLong(goods.get("id")));
+        if(theData!=null){
+            theData.setAddress(theData.getAddress()+"||"+goods.get("address"));
+            theData.setSup_name(theData.getSup_name()+"||"+goods.get("sup_name"));
+            theData.setImage(theData.getImage()+"||"+goods.get("image"));
+            theData.setDescribe(theData.getDescribe()+"||"+goods.get("describe"));
+            supGoodsService.update(theData);
+        }else{
+            supGoodsService.save(new SupGoods
+                    (goods.get("id"), goods.get("sup_name"), goods.get("image"), goods.get("describe"), goods.get("address")
+                    ));
         }
-        //文件名称
-        String realFileName = file.getOriginalFilename();
-        //文件后缀
-        String suffix = realFileName.substring(realFileName.lastIndexOf(".") + 1);
-        /***************文件处理*********************/
-        String newFileName = UUID.randomUUID()+realFileName;
-        String newFilePath=filePath+newFileName;
-        //新文件的路径
-        try {
-            file.transferTo(new File(newFilePath));
-            //将传来的文件写入新建的文件
-            System.out.println("上传图片成功进行上传文件测试");
-
-        }catch (IllegalStateException e ) {
-            //处理异常
-        }catch(IOException e1){
-            //处理异常
-        }
-
+        return "ok";
     }
+
 }
+

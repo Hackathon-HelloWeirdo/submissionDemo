@@ -14,60 +14,78 @@ public class SupGoods {
     @javax.persistence.Id
     @GeneratedValue
     @Column(name = "id")
-    private Long Id;
+    private String Id;
     /**
      * 供给产品名称
      */
     @Column(name = "sup_name")
-    private String reqName;
+    private String sup_name;
     /**
-     * 需求产品数量
+     * 需求产品发布地址
      */
-    @Column(name = "sup_num")
-    private Integer reqNum;
+    @Column(name = "address")
+    private String address;
+    /**
+     * 需求产品图片
+     */
+    @Column(name = "image")
+    private String image;
+    /**
+     * 需求产品描述
+     */
+    @Column(name = "describe")
+    private String describe;
+
+    public SupGoods(String id, String sup_name, String image, String describe, String address) {
+        this.Id = id;
+        this.sup_name = sup_name;
+        this.image = image;
+        this.describe=describe;
+        this.address=address;
+    }
 
     public SupGoods() {
+
     }
 
-    public SupGoods(Long Id, String reqName, int supNum) {
-        this.Id = Id;
-        this.reqName = reqName;
-        this.reqNum = supNum;
-    }
-
-
-    public Long getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         Id = id;
     }
 
-    public String getReqName() {
-        return reqName;
+    public String getSup_name() {
+        return sup_name;
     }
 
-    public void setReqName(String reqName) {
-        this.reqName = reqName;
+    public void setSup_name(String sup_name) {
+        this.sup_name = sup_name;
     }
 
-    public Integer getReqNum() {
-        return reqNum;
+    public String getAddress() {
+        return address;
     }
 
-    public void setReqNum(Integer reqNum) {
-        this.reqNum = reqNum;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
+    public String getImage() {
+        return image;
+    }
 
-    @Override
-    public String toString() {
-        return "Goods{" +
-                "Id=" + Id +
-                ", supName='" + reqName + '\'' +
-                ", supNum=" + reqNum +
-                '}';
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }
 
