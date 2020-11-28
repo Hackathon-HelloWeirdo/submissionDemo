@@ -13,7 +13,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/supqGoods")
 public class SupGoodsController {
-
+int i;
     @Value("${file.path}")
     private String filePath;
     private final SupGoodsService supGoodsService;
