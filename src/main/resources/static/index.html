@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>爱心互助</title>
+  <script src="js/main.js"></script>
+  <script src="js/radar.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/radar.css">
+</head>
+<body>
+  <div class="main">
+    <div class="top">
+      <div class="switch">
+        <button id="sell-graph-btn" class="selected">供应</button>
+        <button id="buy-graph-btn">需求</button>
+      </div>
+      <div class="search-group">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="搜索商品或标签">
+        </div>
+        <div class="search-detail">
+
+        </div>
+      </div>
+      <div class="right-btns">
+        <button id="add-request-btn">
+          <img src="img/add.png">
+        </button>
+        <button id="order-list-btn">
+          <img src="img/order.png">
+        </button>
+        <button id="user-profile-btn"></button>
+      </div>
+    </div>
+    <div class="radar">
+      <div class="radar-me">
+        <img id="radar-image" src="img/user.jpeg">
+      </div>
+      <div id="radar-items">
+        <div v-for="item in items">
+          <div class="radar-pos" v-bind:style="{ transform: `rotate(${item.angle}deg)`}" v-if="item.dis <= maxD && item.display">
+            <div class="radar-item" v-bind:style="{ 'background-color': item.emerg ? '#ff180d' : '#29a0ff', top: `${(20 + Math.max(24, item.dis - minD) * 1.5).toFixed(0)}px`, transform: `rotate(${-item.angle}deg)` }" v-on:click="click(item.id)">
+              <img v-bind:src="item.multiType ? '/img/multi.png' : `/types/${item.type}.png`">
+              <div v-bind:title="item.name">{{ item.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="radar-circles">
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</body>
+</html>

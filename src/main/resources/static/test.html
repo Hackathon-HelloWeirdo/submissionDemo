@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+  </style>
+  <script>
+    window.onload = () => {
+      var addr_vm = new Vue({
+        el: '#addresses',
+        data: {
+          addresses: [],
+          editing: false,
+          newAddr: '',
+          defaultAddr: 0
+        },
+        methods: {
+          addAddr: function () {
+            this.editing = true;
+          },
+          add: function () {
+            this.editing = false;
+            this.addresses.push({name: this.newAddr, id: this.addresses.length});
+            console.log(this.newAddr);
+            this.newAddr = '';
+          },
+          remove: function (id) {
+            console.log(id);
+            this.addresses.splice(id, 1);
+            console.log(this.addresses)
+          },
+          setDefault: function (id) {
+            this.defaultAddr = id;
+          }
+        }
+      })
+    }
+  </script>
+</head>
+<body>
+  <div id="addresses">
+    <button v-on:click="addAddr" v-bind:disabled="editing">添加一个地址</button>
+    <ul class="addr-list">
+      <li class="addr" v-for="addr in addresses">
+        <span>{{ addr.name }}</span>
+        <button v-on:click="remove(addr.id)">×</button>
+        <button v-on:click="setDefault(addr.id)" v-if="addr.id != defaultAddr">设为默认</button>
+        <span v-if="addr.id == defaultAddr">默认地址</span>
+      </li>
+      <li class="add-addr" v-if="editing">
+        <input v-model="newAddr" type="text">
+        <button v-on:click="add" v-bind:disabled="newAddr.length == 0">添加</button>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
