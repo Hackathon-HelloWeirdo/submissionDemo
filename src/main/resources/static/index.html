@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>爱心互助</title>
+  <script src="js/main.js"></script>
+  <script src="js/radar.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/radar.css">
+</head>
+<body>
+  <div class="main">
+    <div class="top">
+      <div class="switch">
+        <button id="sell-graph-btn" class="selected">供应</button>
+        <button id="buy-graph-btn">需求</button>
+      </div>
+      <div class="search-group">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="搜索商品或标签">
+        </div>
+        <div class="search-detail">
+
+        </div>
+      </div>
+      <div class="right-btns">
+        <button id="add-request-btn">
+          <img src="img/add.png">
+        </button>
+        <button id="order-list-btn">
+          <img src="img/order.png">
+        </button>
+        <button id="user-profile-btn">
+          <img src="img/user.jpeg" style="border-radius: 50%;">
+        </button>
+      </div>
+    </div>
+    <div id="radar" style="display: none">
+      <div class="radar-me">
+        <img id="radar-image" src="img/user.jpeg">
+      </div>
+      <div id="radar-items">
+        <div v-for="item in items">
+          <div class="radar-pos" v-bind:style="{ transform: `rotate(${item.angle}deg)`, 'z-index': item.id == nowSelect ? '100' : '0'}" v-if="item.dis <= maxD && item.display">
+            <div class="radar-item" v-bind:style="{ 'background-color': item.emerg ? '#ff180d' : '#29a0ff', top: `${(20 + Math.max(24, item.dis - minD) * 1.5).toFixed(0)}px`, transform: `rotate(${-item.angle}deg)` }" v-on:click="click(item.id)">
+              <img v-bind:src="item.multiType ? 'img/multi.png' : `types/${item.type}.png`">
+              <div v-bind:title="item.name">{{ item.name }}</div>
+              <div style="position: relative; overflow: visible;" v-if="nowSelect == item.id">
+                <div style="border-radius: 10px; overflow: hidden; position: absolute;" v-bind:style="{top: item.angle > 90 && item.angle < 270 ? '0' : '-350px', left: item.angle < 180 ? '0' : '-200px'}">
+                  <div class="radar-pop">
+                    <div v-for="msg in (item.group ? item.group.list : [item])" class="radar-detail" v-bind:style="{ 'background-color': item.trueEmerg ? '#ffc0c0' : '#9ed4ff'}">
+                      <img v-if="msg.img" v-bind:src="msg.img">
+                      <div style="font-size: 20px; line-height: 26px;">{{msg.trueName}}</div>
+                      <div style="color: gray;">距离您{{(msg.trueDis).toFixed(0)}}m</div>
+                      <div>联系电话：{{msg.phone}}</div>
+                      <div>发出者：{{msg.user}}</div>
+                      <div>详情：{{msg.describe}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="radar-circles">
+      </div>
+    </div>
+    <div id="sign-in">
+      <div style="font-size: 24px; text-align: center;">登录</div>
+      <dl>
+        <dt>用户名</dt>
+        <dd><input id="user" type="text" v-model="username"/></dd>
+        <dt>密码</dt>
+        <dd><input id="passwd" type="password" v-model="passwd" /></dd>
+      </dl>
+      <div style="display: flex; flex-direction: row;">
+        <button v-bind:disabled="!valid" v-on:click="submit" class="btn btn-pr" style="width: auto;">登录</button>
+        <button v-on:click="signUp" class="btn btn-ok" style="width: auto;">注册</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+</body>
+</html>
