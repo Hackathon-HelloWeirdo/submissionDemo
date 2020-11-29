@@ -14,4 +14,10 @@ public interface UserService {
      * @param user 存入用户的信息 (用于注册界面)
      */
     void save(User user);
+
+    /**
+     * 查询用户账号密码是否正确
+     * @param user_name 用户发来的用户名
+     */
+    User  findByUser_name(String user_name);
 }

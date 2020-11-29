@@ -2,7 +2,6 @@ package com.jiayou.demo.controller;
 
 import com.jiayou.demo.entity.SupGoods;
 import com.jiayou.demo.service.SupGoodsService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -10,8 +9,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/supGoods")
 public class SupGoodsController {
-    @Value("${file.path}")
-    private String filePath;
     private final SupGoodsService supGoodsService;
 
     public SupGoodsController(SupGoodsService supGoodsService) {
@@ -41,8 +38,7 @@ public class SupGoodsController {
      * @param goods
      * @return 是否成功
      */
-    // @RequestMapping(value = "/add",method = RequestMethod.POST)
-    @RequestMapping(value = "saveGoods", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/saveSupGoods", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String save(@RequestParam Map<String, String> goods) {
         SupGoods theData=supGoodsService.findById(Long.parseLong(goods.get("id")));
@@ -58,6 +54,12 @@ public class SupGoodsController {
                     ));
         }
         return "ok";
+    }
+
+        @RequestMapping(value = "/hello", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+        @ResponseBody
+        public String hello() {
+            return "Hello Spring Boot!";
     }
 
 }

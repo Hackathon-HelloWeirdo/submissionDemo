@@ -11,25 +11,17 @@ public interface SupGoodsService {
     SupGoods findById(Long id);
 
     /**
-     * 自己填
+     * 存入商品信息
      * @param reqGoods 商品信息 (不需要id)
      */
     void save(SupGoods reqGoods);
 
     /**
-     * 自己填
-     * @param reqGoods 自己填(必须有id)
+     * 更新需求商品
+     * @param reqGoods 需求商品(必须有id)
      * @return 自己填
      */
     SupGoods update(SupGoods reqGoods);
 
-    /**
-     * 自己填
-     * @param id 自己填
-     */
-    void delete(Long id);
-    /**
-     * 其他自己扩展
-     */
-    /*List<Goods> page(???)*/
+
 }

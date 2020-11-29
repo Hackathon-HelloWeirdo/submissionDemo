@@ -26,8 +26,4 @@ public class SupGoodsServiceImpl implements SupGoodsService {
         return supGoodsRepository.save(supGoods);
     }
 
-    @Override
-    public void delete(Long id) {
-        supGoodsRepository.deleteById(id);
-    }
 }
