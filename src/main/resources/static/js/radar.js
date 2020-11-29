@@ -246,7 +246,8 @@ window.load_radar = () => {
             }
             if (item.type != groupObj.type)
               typeMulti = true;
-            if (item.emerg) hasEmerg = true;
+            if (item.emerg)
+              hasEmerg = true;
             return true;
           });
           if (!typeMulti) groupObj.multiType = false;
