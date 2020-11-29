@@ -115,8 +115,7 @@ input:focus {
   background-color: #DDD6;
 }
 
-#sign-in,
-#sign-up {
+.panel {
   width: 200px;
   position: absolute;
   left: 50%;

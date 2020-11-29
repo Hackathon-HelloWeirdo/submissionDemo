@@ -50,7 +50,7 @@ window.addEventListener("load", function () {
       items_vm.clear();
       request_data.forEach(data => items_vm.add(data));
     });
-    $('#add-request-btn').click(function () {
+    $('#add-reqsup-btn').click(function () {
 
     });
     $('#order-list-btn').click(function () {
