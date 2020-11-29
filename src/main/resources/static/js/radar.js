@@ -3,7 +3,7 @@
 const CIR_PADDING = 150;
 const COLOR_NORM = '#29a0ff';
 const COLOR_EMERG = '#ff180d';
-window.addEventListener("load", () => {
+window.load_radar = () => {
   var typeLast = [];
   window.groups = [];
   window.items_vm = new Vue({
@@ -11,11 +11,13 @@ window.addEventListener("load", () => {
     data: {
       items: [],
       maxD: 600,
-      minD: 100
+      minD: 0,
+      nowSelect: -1
     },
     methods: {
       click: function (id) {
         console.log(id);
+        this.nowSelect = id;
       },
       // 顺序添加item
       add: function (data) {
@@ -33,6 +35,9 @@ window.addEventListener("load", () => {
         o.multiType = false;
         o.group = null;
         o.possible = [];
+        o.trueName = data.name;
+        o.trueEmerg = data.emgcy;
+        o.trueDis = data.dist;
     
         if (this.insert(o)) {
           typeLast[o.type] = o;
@@ -48,6 +53,7 @@ window.addEventListener("load", () => {
           if (!item.grouped)
             angles.push({id: i, angle: item.angle});
         }
+        console.log(angles);
         if (!angles.length) {
           obj.angle = Math.floor(Math.random() * 360);
           return true;
@@ -56,9 +62,12 @@ window.addEventListener("load", () => {
         angles.push({id: angles[0].id, angles: angles[0].angle + 360});
         
         // 基于插入位置的碰撞判定
+        var limit = 60 / Math.round(obj.dis / 100);
+        console.log(limit);
         for (var i = 1; i < angles.length; i++)
-          if (angles[i].angle - angles[i - 1].angle >= 60) {
-            obj.angle = (angles[i - 1].angle + 30 + Math.floor(Math.random() * (angles[i].angle - angles[i - 1].angle - 60))) % 360;
+          if (angles[i].angle - angles[i - 1].angle >= limit) {
+            console.log("aaa")
+            obj.angle = (angles[i - 1].angle + limit / 2 + Math.floor(Math.random() * (angles[i].angle - angles[i - 1].angle - limit))) % 360;
             obj.possible = [this.items[angles[i - 1].id], this.items[angles[i].id]];
             this.items[angles[i - 1]].possible.push(obj);
             this.items[angles[i]].possible.push(obj);
@@ -122,11 +131,16 @@ window.addEventListener("load", () => {
               group(this.items[j]).add(item);
             return;
           }
+      },
+      clear: function () {
+        this.minD = 0; this.maxD = 600;
+        this.items = [];
+        typeLast = [];
+        groups = [];
       }
     }
   });
 
-  radar_data.forEach(data => items_vm.add(data));
   // circle and zooming
   var circles = [];
   for (let i = 0; i < 6; i++) {
@@ -138,7 +152,7 @@ window.addEventListener("load", () => {
   }
   var zooming = false;
   $('#radar-items')[0].addEventListener('wheel', function (e) {
-    if (zooming) return;
+    if (zooming || items_vm.nowSelect != -1) return;
     if (e.deltaY > 0)
       zoomIn();
     else
@@ -160,7 +174,7 @@ window.addEventListener("load", () => {
     this.className = '';
   });
   function zoomIn() {
-    if (items_vm.minD == 100) {
+    if (items_vm.minD == 0) {
       $('#radar-circles').addClass('ceil');
       return;
     }
@@ -189,9 +203,7 @@ window.addEventListener("load", () => {
     var o = {};
     var count = 1;
     var groupObj = obj;
-    var originalName = obj.name;
     var list = [];
-    var originEmerg = obj.emerg;
     // console.log("set group", groups.length, "->", obj.id);
     Object.defineProperties(o, {
       'add': {
@@ -238,9 +250,9 @@ window.addEventListener("load", () => {
             return true;
           });
           if (!typeMulti) groupObj.multiType = false;
-          if (!hasEmerg) groupObj.emerg = originEmerg;
+          if (!hasEmerg) groupObj.emerg = groupObj.trueEmerg;
           if (list.length == 0) {
-            groupObj.name = originalName;
+            groupObj.name = groupObj.trueName;
             groupObj.group = null;
             return true;
           }
@@ -254,17 +266,29 @@ window.addEventListener("load", () => {
         get: function () {
           return count;
         }
+      },
+      'list': {
+        get: function () {
+          var full = [groupObj];
+          list.forEach(obj => obj.obj.group ? full.push(... obj.obj.group.list) : full.push(obj.obj));
+          return full;
+        }
       }
     });
     groups.push(groupObj.group = o);
     return o;
   }
-});
-
-const PI180 = Math.PI / 180;
-function collise(disA, angA, disB, angB) {
-  angA *= PI180; angB *= PI180;
-  var dx = disA * Math.cos(angA) - disB * Math.cos(angB);
-  var dy = disA * Math.sin(angA) - disB * Math.sin(angB);
-  return dx * dx + dy * dy < 4900;
-}
+  
+  const PI180 = Math.PI / 180;
+  function collise(disA, angA, disB, angB) {
+    angA *= PI180; angB *= PI180;
+    var dx = disA * Math.cos(angA) - disB * Math.cos(angB);
+    var dy = disA * Math.sin(angA) - disB * Math.sin(angB);
+    console.log("get")
+    return dx * dx + dy * dy < 4900;
+  }
+  
+  document.body.addEventListener('click', () => {
+    items_vm.nowSelect = -1;
+  }, true);
+};
