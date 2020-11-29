@@ -4,7 +4,8 @@ body {
   height: 100%;
 }
 button:focus,
-input:focus {
+input:focus,
+textarea:focus {
   outline: none;
 }
 .top {
@@ -137,7 +138,8 @@ dd > input {
   border-radius: 10px;
   background-color: #DDD;
 }
-dd > input:focus {
+dd > input:focus,
+textarea:focus {
   filter: brightness(1.05);
 }
 .btn:disabled {
@@ -154,4 +156,34 @@ dd > input:focus {
 .btn-ok {
   background-color: #3cb741;
   color: white;
+}
+textarea {
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #DDD;
+  height: 100px;
+}
+.panel-title {
+  height: 40px;
+  line-height: 40px;
+  font-size: 32px;
+}
+.close {
+  border: none;
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  margin-right: -5px;
+  border-radius: 8px;
+  transition: background-colot .3s ease-out;
+  float: right;
+  line-height: 30px;
+  padding: 0;
+  cursor: pointer;
+  font-size: 32px;
+}
+.close:hover {
+  background-color: #DDD3;
 }

@@ -29,7 +29,8 @@
           <img src="img/add.png">
         </button>
         <div style="position: relative;">
-          <div class="panel" id="add-req">
+          <div class="panel" id="add-req" style="top: 50px; left: -330px; display: none; width: 400px;">
+            <div class="panel-title">创建一个需求项目<button class="close" v-on:click="close">×</button></div>
             <dl>
               <dt>需求名称</dt>
               <dd><input type="text" v-model="name"/></dd>
@@ -42,15 +43,17 @@
                 </select>
               </dd>
               <dt>需求描述</dt>
-              <dd><textarea v-model="intro"></textarea></dd>
+              <dd><textarea v-model="intro" style="width: 340px; max-width: 340px;"></textarea></dd>
               <dt>配送地址</dt>
-              <dd><input type="text" v-model="name"/></dd>
+              <dd><input type="text" v-model="address" style="width: 340px;"/></dd>
             </dl>
             <button v-bind:disabled="!valid" v-on:click="submit" class="btn btn-pr" style="width: auto;">发布</button>
           </div>
-          <div class="panel" id="add-sup">
-            <ul>
-              <div class="add-img"></div>
+          <div class="panel" id="add-sup" style="top: 50px; left: -330px; display: none; width: 400px;">
+            <div class="panel-title">创建一个供给项目<button class="close" v-on:click="close">×</button></div>
+            <dl>
+              <div class="add-img">
+              </div>
               <dt>物品名称</dt>
               <dd><input type="text" v-model="name"/></dd>
               <dt>物品类型</dt>
@@ -62,11 +65,13 @@
                   <option value="3">其他物品</option>
                 </select>
               </dd>
+              <dt>物品图片URL</dt>
+              <dd><input type="text" v-model="image" placeholder="可不填" style="width: 340px;"/></dd>
               <dt>物品描述</dt>
-              <dd><textarea v-model="intro"></textarea></dd>
+              <dd><textarea v-model="intro" style="width: 340px; max-width: 340px;"></textarea></dd>
               <dt>配送地址</dt>
-              <dd><input type="text" v-model="name"/></dd>
-            </ul>
+              <dd><input type="text" v-model="address" style="width: 340px;"/></dd>
+            </dl>
             <button v-bind:disabled="!valid" v-on:click="submit" class="btn btn-pr" style="width: auto;">发布</button>
           </div>
         </div>

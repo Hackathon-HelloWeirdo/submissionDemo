@@ -27,37 +27,110 @@ supply_data.sort((a, b) => a.dist - b.dist);
 
 window.addEventListener("load", function () {
   var graphNow = 0;
-  var userid;
+  var userid, lastAddr = '';
   if (userid = document.cookie.match(/userid=[0-9]*/)) {
     userid = userid[0];
     $('#sign-in').css('display', 'none');
-    load_radar();
-    $('#radar').css('display', 'block');
-    supply_data.forEach(data => items_vm.add(data));
-    $('#sell-graph-btn').click(function () {
-      if (graphNow == 0) return;
-      $('#sell-graph-btn').addClass('selected');
-      $('#buy-graph-btn').removeClass('selected');
-      graphNow = 0;
-      items_vm.clear();
-      supply_data.forEach(data => items_vm.add(data));
-    });
-    $('#buy-graph-btn').click(function () {
-      if (graphNow == 1) return;
-      $('#buy-graph-btn').addClass('selected');
-      $('#sell-graph-btn').removeClass('selected');
-      graphNow = 1;
-      items_vm.clear();
-      request_data.forEach(data => items_vm.add(data));
+    $.get('/reqGoods/getAll', {}, function (data) {
+      console.log(data);
+      //process
+      $.get('/supGoods/getAll', {}, function (data) {
+        console.log(data);
+        //process
+        load_radar();
+        $('#radar').css('display', 'block');
+        supply_data.forEach(data => items_vm.add(data));
+        $('#sell-graph-btn').click(function () {
+          if (graphNow == 0) return;
+          $('#sell-graph-btn').addClass('selected');
+          $('#buy-graph-btn').removeClass('selected');
+          graphNow = 0;
+          items_vm.clear();
+          supply_data.forEach(data => items_vm.add(data));
+        });
+        $('#buy-graph-btn').click(function () {
+          if (graphNow == 1) return;
+          $('#buy-graph-btn').addClass('selected');
+          $('#sell-graph-btn').removeClass('selected');
+          graphNow = 1;
+          items_vm.clear();
+          request_data.forEach(data => items_vm.add(data));
+        });
+      });
     });
     $('#add-reqsup-btn').click(function () {
-
+      if (graphNow == 0) {
+        sup_vm.clear();
+        $('#add-sup').css('display', 'block');
+      }
+      else {
+        req_vm.clear();
+        $('#add-req').css('display', 'block');
+      }
     });
     $('#order-list-btn').click(function () {
-
     });
     $('#user-profile-btn').click(function () {
-
+      // $('#user-profile').css('display', 'block');
+    });
+    var req_vm = new Vue({
+      el: '#add-req',
+      data: {
+        name: '',
+        type: 0,
+        intro: '',
+        address: lastAddr
+      },
+      computed: {
+        valid: function () {
+          return this.name.length && this.address.length;
+        }
+      },
+      methods: {
+        submit: function () {
+          $.post('/reqGoods/saveReGoods', {id: userid, req_name: `${this.type}||${this.name}`, describe: this.intro, address: this.address});
+          lastAddr = this.address;
+          $('#add-req').css('display', 'none');
+        },
+        clear: function () {
+          this.name = this.intro = '';
+          this.address = lastAddr;
+          this.type = 0;
+        },
+        close: function () {
+          $('#add-req').css('display', 'none');
+        }
+      }
+    });
+    var sup_vm = new Vue({
+      el: '#add-sup',
+      data: {
+        name: '',
+        type: 0,
+        intro: '',
+        address: lastAddr,
+        image: ''
+      },
+      computed: {
+        valid: function () {
+          return this.name.length && this.address.length;
+        }
+      },
+      methods: {
+        submit: function () {
+          $.post('/supGoods/saveSupGoods', {id: userid, req_name: `${this.type}||${this.name}`, describe: this.intro, address: this.address, image: this.image});
+          lastAddr = this.address;
+          $('#add-sup').css('display', 'none');
+        },
+        clear: function () {
+          this.name = this.intro = this.image = '';
+          this.address = lastAddr;
+          this.type = 0;
+        },
+        close: function () {
+          $('#add-sup').css('display', 'none');
+        }
+      }
     });
   }
   else {
