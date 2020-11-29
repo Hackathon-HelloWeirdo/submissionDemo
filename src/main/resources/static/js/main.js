@@ -31,12 +31,12 @@ window.addEventListener("load", function () {
   if (userid = document.cookie.match(/userid=[0-9]*/)) {
     userid = userid[0];
     $('#sign-in').css('display', 'none');
-    $.get('/reqGoods/getAll', {}, function (data) {
+    /*$.get('/reqGoods/getAll', {}, function (data) {
       console.log(data);
       //process
       $.get('/supGoods/getAll', {}, function (data) {
         console.log(data);
-        //process
+        //process*/
         load_radar();
         $('#radar').css('display', 'block');
         supply_data.forEach(data => items_vm.add(data));
@@ -56,8 +56,8 @@ window.addEventListener("load", function () {
           items_vm.clear();
           request_data.forEach(data => items_vm.add(data));
         });
-      });
-    });
+      /*});
+    });*/
     $('#add-reqsup-btn').click(function () {
       if (graphNow == 0) {
         sup_vm.clear();
@@ -147,16 +147,17 @@ window.addEventListener("load", function () {
       },
       methods: {
         submit: function () {
-          $.post('/user/login', {user_name: this.username, password: md5(this.passwd + 'hackathon')}, function (data) {
+          /*$.post('/user/login', {user_name: this.username, password: md5(this.passwd + 'hackathon')}, function (data) {
             if (data == 'false')
               alert('用户名或密码错误！');
-            else {
+            else {*/
+              data = 'ok23';
               var d = new Date();
               d.setTime(d.getTime() + (7*24*60*60*1000));
               document.cookie = `userid=${data.slice(2, 5)};expires=${d.toUTCString()};path=/`;
               location.reload();
-            }
-          });
+            /*}
+          });*/
         },
         signUp: function () {
           location.href = 'signUp.html';
